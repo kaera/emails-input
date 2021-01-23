@@ -47,19 +47,37 @@
 <body>
     <form class="form">
         <div class="form-body">
-            <div class="form-title">Share <strong>Board name</strong> with others</div>
+            <div class="form-title">
+                Share <strong>Board name</strong> with others
+            </div>
             <div id="emails-input"></div>
         </div>
         <div class="form-footer">
-            <button class="form-button">Add email</button>
-            <button class="form-button">Get email count</button>
+            <button class="form-button" type="button" id="add-email">
+                Add email
+            </button>
+            <button class="form-button" type="button" id="show-email-count">
+                Get email count
+            </button>
         </div>
     </form>
 
-    <script>window.exports = {};</script>
+    <script>
+        window.exports = {};
+    </script>
     <script src="emails-input.js"></script>
     <script>
         var inputContainerNode = document.querySelector('#emails-input');
         var emailsInput = EmailsInput(inputContainerNode);
+        document.querySelector('#add-email').addEventListener('click', () => {
+            emailsInput.addEmail(
+                Math.random().toString(36).slice(2, 10) + '@example.com',
+            );
+        });
+        document
+            .querySelector('#show-email-count')
+            .addEventListener('click', () => {
+                alert(emailsInput.getEmailCount());
+            });
     </script>
 </body>

@@ -24,7 +24,7 @@ export function EmailsInput(rootNode: Element | null) {
 
     const input = document.createElement('input');
     input.setAttribute('placeholder', 'add more people...');
-    input.setAttribute('style', 'border: 0');
+    input.setAttribute('style', 'border: 0; outline: 0');
     rootNode.appendChild(input);
 
     const emails: Email[] = [];
@@ -38,8 +38,25 @@ export function EmailsInput(rootNode: Element | null) {
                 value: email,
                 isValid: isValidEmail(email),
             });
+            const emailTag = document.createElement('span');
+            emailTag.textContent = email;
+            emailTag.className = 'email-tag';
+            emailTag.setAttribute(
+                'style',
+                `
+                margin: 4px 8px 4px 0;
+                font-size: 14px;
+                line-height: 24px;
+                display: inline-block;
+
+                background: rgba(102, 153, 255, 0.2);
+                border-radius: 100px;
+                padding: 0 24px 0 10px;
+            `,
+            );
+            rootNode.insertBefore(emailTag, input);
         },
-        getEmailsCount: (): number =>
+        getEmailCount: (): number =>
             new Set(
                 emails
                     .filter((email) => email.isValid)
