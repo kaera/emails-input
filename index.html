@@ -1,12 +1,64 @@
-<body>
-	<h1>Share <strong>Board name</strong> with others</h1>
-	<div id="emails-input"></div>
-	<button>Add email</button>
-	<button>Get email count</button>
+<head>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
 
-	<script src="emails-input.js"></script>
-	<script>
-		var inputContainerNode = document.querySelector('#emails-input');
-		var emailsInput = EmailsInput(inputContainerNode);
-	</script>
+        .form {
+            width: 540px;
+            margin: 100px auto;
+
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-body {
+            padding: 32px 50px 24px;
+            background: #f8f8f7;
+        }
+
+        .form-title {
+            margin-bottom: 24px;
+            font-size: 20px;
+            line-height: 27px;
+        }
+
+        .form-footer {
+            display: flex;
+            padding: 24px 50px 32px;
+        }
+
+        .form-button {
+            margin-right: 16px;
+            padding: 8px 16px;
+            background: #4262ff;
+            border: 0;
+            border-radius: 6px;
+
+            color: #fff;
+            font-size: 14px;
+            line-height: 24px;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form class="form">
+        <div class="form-body">
+            <div class="form-title">Share <strong>Board name</strong> with others</div>
+            <div id="emails-input"></div>
+        </div>
+        <div class="form-footer">
+            <button class="form-button">Add email</button>
+            <button class="form-button">Get email count</button>
+        </div>
+    </form>
+
+    <script src="emails-input.js"></script>
+    <script>
+        var inputContainerNode = document.querySelector('#emails-input');
+        var emailsInput = EmailsInput(inputContainerNode);
+    </script>
 </body>
