@@ -26,9 +26,10 @@ export function EmailsInput(rootNode: Element | null) {
     const input = document.createElement('input');
     input.setAttribute('placeholder', 'add more people...');
     input.className = 'input';
-    input.addEventListener('input', (e) => {
-        if ((e as InputEvent).data === ',') {
-            const value = input.value.slice(0, -1);
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            const value = input.value;
             if (value) {
                 addEmail(value);
             }

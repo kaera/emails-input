@@ -55,10 +55,19 @@ describe(__filename, () => {
             expect(rootNode.querySelector('.email-tag')).toBeNull();
         });
 
-        it('should add email after typing comma', () => {
+        it('should add email by pressing comma', () => {
             const input = rootNode.querySelector('.input') as HTMLInputElement;
-            input.value = 'foo@example.com,';
-            input.dispatchEvent(new InputEvent('input', { data: ',' }));
+            input.value = 'foo@example.com';
+            input.dispatchEvent(new KeyboardEvent('keypress', { key: ',' }));
+            expect(component.getEmailCount()).toBe(1);
+        });
+
+        it('should add email by pressing enter', () => {
+            const input = rootNode.querySelector('.input') as HTMLInputElement;
+            input.value = 'foo@example.com';
+            input.dispatchEvent(
+                new KeyboardEvent('keypress', { key: 'Enter' }),
+            );
             expect(component.getEmailCount()).toBe(1);
         });
     });
