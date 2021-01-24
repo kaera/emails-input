@@ -24,20 +24,24 @@ export function EmailsInput(rootNode: Element | null) {
         throw new Error('Missing root node');
     }
 
+    let validEmailCount = 0;
+    const emails: {
+        [email: string]: {
+            num: number;
+            isValid: boolean;
+        };
+    } = {};
+
     rootNode.classList.add('emails-input');
     rootNode.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
         if (target.className === 'emails-input--remove-button') {
             const emailTag = target.parentNode as Node;
-            let emailIndex = 0;
-            // Array.prototype.findIndex isn't available in IE11
-            for (let i = 0; i < emails.length; i++) {
-                if (emails[i].value === target.dataset.value) {
-                    emailIndex = i;
-                    break;
-                }
+            const email = emails[target.dataset.value!];
+            email.num--;
+            if (email.num === 0) {
+                validEmailCount--;
             }
-            emails.splice(emailIndex, 1);
             rootNode.removeChild(emailTag);
         } else {
             input.focus();
@@ -86,35 +90,38 @@ export function EmailsInput(rootNode: Element | null) {
     );
     rootNode.appendChild(input);
 
-    const emails: Email[] = [];
+    const addEmail = (value: string): void => {
+        if (!(value in emails)) {
+            emails[value] = {
+                num: 0,
+                isValid: /^[^\s,@]+@[^\s,@]+$/.test(value),
+            };
+        }
 
-    const addEmail = (email: string): void => {
-        const isValid = /^[^\s,@]+@[^\s,@]+$/.test(email);
-        emails.push({
-            value: email,
-            isValid,
-        });
+        const email = emails[value];
+        email.num++;
+        if (email.isValid && email.num === 1) {
+            validEmailCount++;
+        }
+
         const emailTag = document.createElement('span');
-        emailTag.textContent = email;
+        emailTag.textContent = value;
         emailTag.classList.add('emails-input--tag');
         emailTag.classList.add(
-            isValid ? 'emails-input--tag-valid' : 'emails-input--tag-invalid',
+            email.isValid
+                ? 'emails-input--tag-valid'
+                : 'emails-input--tag-invalid',
         );
         const removeBtn = document.createElement('span');
         removeBtn.className = 'emails-input--remove-button';
-        removeBtn.dataset.value = email;
+        removeBtn.dataset.value = value;
         emailTag.appendChild(removeBtn);
         rootNode.insertBefore(emailTag, input);
     };
 
     return {
         addEmail,
-        getEmailCount: (): number =>
-            new Set(
-                emails
-                    .filter((email) => email.isValid)
-                    .map((email) => email.value),
-            ).size,
+        getEmailCount: (): number => validEmailCount,
     };
 }
 window.EmailsInput = EmailsInput;
