@@ -1,83 +1,86 @@
-<head>
-    <style>
-        body {
-            font-family: sans-serif;
-        }
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+            }
 
-        .form {
-            width: 540px;
-            margin: 100px auto;
+            .form {
+                width: 540px;
+                margin: 100px auto;
 
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
-        }
+                background: #fff;
+                border-radius: 8px;
+                box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+            }
 
-        .form-body {
-            padding: 32px 50px 24px;
-            background: #f8f8f7;
-        }
+            .form-body {
+                padding: 32px 50px 24px;
+                background: #f8f8f7;
+            }
 
-        .form-title {
-            margin-bottom: 24px;
-            font-size: 20px;
-            line-height: 27px;
-        }
+            .form-title {
+                margin-bottom: 24px;
+                font-size: 20px;
+                line-height: 27px;
+            }
 
-        .form-footer {
-            display: flex;
-            padding: 24px 50px 32px;
-        }
+            .form-footer {
+                display: flex;
+                padding: 24px 50px 32px;
+            }
 
-        .form-button {
-            margin-right: 16px;
-            padding: 8px 16px;
-            background: #4262ff;
-            border: 0;
-            border-radius: 6px;
+            .form-button {
+                margin-right: 16px;
+                padding: 8px 16px;
+                background: #4262ff;
+                border: 0;
+                border-radius: 6px;
 
-            color: #fff;
-            font-size: 14px;
-            line-height: 24px;
-            text-align: center;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <form class="form">
-        <div class="form-body">
-            <div class="form-title">
-                Share <strong>Board name</strong> with others
+                color: #fff;
+                font-size: 14px;
+                line-height: 24px;
+                text-align: center;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <form class="form">
+            <div class="form-body">
+                <div class="form-title">
+                    Share <strong>Board name</strong> with others
+                </div>
+                <div id="emails-input"></div>
             </div>
-            <div id="emails-input"></div>
-        </div>
-        <div class="form-footer">
-            <button class="form-button" type="button" id="add-email">
-                Add email
-            </button>
-            <button class="form-button" type="button" id="show-email-count">
-                Get email count
-            </button>
-        </div>
-    </form>
+            <div class="form-footer">
+                <button class="form-button" type="button" id="add-email">
+                    Add email
+                </button>
+                <button class="form-button" type="button" id="show-email-count">
+                    Get email count
+                </button>
+            </div>
+        </form>
 
-    <script>
-        window.exports = {};
-    </script>
-    <script src="emails-input.js"></script>
-    <script>
-        var inputContainerNode = document.querySelector('#emails-input');
-        var emailsInput = EmailsInput(inputContainerNode);
-        document.querySelector('#add-email').addEventListener('click', () => {
-            emailsInput.addEmail(
-                Math.random().toString(36).slice(2, 10) + '@example.com',
-            );
-        });
-        document
-            .querySelector('#show-email-count')
-            .addEventListener('click', () => {
-                alert(emailsInput.getEmailCount());
-            });
-    </script>
-</body>
+        <script src="emails-input.ts"></script>
+        <script>
+            var inputContainerNode = document.querySelector('#emails-input');
+            var emailsInput = EmailsInput(inputContainerNode);
+            document
+                .querySelector('#add-email')
+                .addEventListener('click', () => {
+                    emailsInput.addEmail(
+                        Math.random().toString(36).slice(2, 10) +
+                            '@example.com',
+                    );
+                });
+            document
+                .querySelector('#show-email-count')
+                .addEventListener('click', () => {
+                    alert(emailsInput.getEmailCount());
+                });
+        </script>
+    </body>
+</html>

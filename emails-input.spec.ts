@@ -1,10 +1,7 @@
-import { EmailsInput } from './emails-input';
+import { EmailsInput, EmailsInputAPI } from './emails-input';
 
 describe(__filename, () => {
-    let component: {
-        addEmail: (email: string) => void;
-        getEmailCount: () => number;
-    };
+    let component: EmailsInputAPI;
     let rootNode: HTMLElement;
 
     beforeEach(() => {
