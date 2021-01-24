@@ -97,6 +97,11 @@ export function EmailsInput(rootNode: Element | null) {
     });
 
     const addEmail = (value: string): void => {
+        value = value.trim();
+        if (!value) {
+            return;
+        }
+
         if (!(value in emails)) {
             emails[value] = {
                 num: 0,

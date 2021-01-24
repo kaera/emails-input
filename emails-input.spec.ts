@@ -32,6 +32,11 @@ describe(__filename, () => {
             component.addEmail('foo@example.com');
             expect(component.getEmailCount()).toBe(1);
         });
+
+        it('should not add empty emails', () => {
+            component.addEmail('    ');
+            expect(component.getEmailCount()).toBe(1);
+        });
     });
 
     describe('DOM', () => {
@@ -42,6 +47,12 @@ describe(__filename, () => {
             expect(
                 emailTag?.classList.contains('emails-input--tag-valid'),
             ).toBeTruthy();
+        });
+
+        it('should trim spaces', () => {
+            component.addEmail('foo@example.com   ');
+            const emailTag = rootNode.querySelector('.emails-input--tag');
+            expect(emailTag?.textContent).toBe('foo@example.com');
         });
 
         it('should render invalid email tags', () => {
