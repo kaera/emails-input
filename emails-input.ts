@@ -27,7 +27,7 @@ export function EmailsInput(rootNode: Element | null) {
     rootNode.classList.add('emails-input');
     rootNode.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
-        if (target.className === 'remove-button') {
+        if (target.className === 'emails-input--remove-button') {
             const emailTag = target.parentNode as Node;
             let emailIndex = 0;
             // Array.prototype.findIndex isn't available in IE11
@@ -53,7 +53,7 @@ export function EmailsInput(rootNode: Element | null) {
 
     const input = document.createElement('input');
     input.setAttribute('placeholder', 'add more people...');
-    input.className = 'input';
+    input.className = 'emails-input--input';
     input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' || e.key === ',') {
             e.preventDefault();
@@ -96,10 +96,12 @@ export function EmailsInput(rootNode: Element | null) {
         });
         const emailTag = document.createElement('span');
         emailTag.textContent = email;
-        emailTag.classList.add('email-tag');
-        emailTag.classList.add(isValid ? 'valid' : 'invalid');
+        emailTag.classList.add('emails-input--tag');
+        emailTag.classList.add(
+            isValid ? 'emails-input--tag-valid' : 'emails-input--tag-invalid',
+        );
         const removeBtn = document.createElement('span');
-        removeBtn.className = 'remove-button';
+        removeBtn.className = 'emails-input--remove-button';
         removeBtn.dataset.value = email;
         emailTag.appendChild(removeBtn);
         rootNode.insertBefore(emailTag, input);
