@@ -39,4 +39,9 @@
     outline: 0;
     display: inline-block;
     margin-top: 4px;
+    font-size: 14px;
+}
+
+.emails-input--input::-ms-clear {
+    display: none;
 }

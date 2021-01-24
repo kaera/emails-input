@@ -1,10 +1,5 @@
 import './emails-input.css';
 
-interface Email {
-    value: string;
-    isValid: boolean;
-}
-
 export interface EmailsInputAPI {
     addEmail: (email: string) => void;
     getEmailCount: () => number;
