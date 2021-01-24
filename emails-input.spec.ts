@@ -1,13 +1,20 @@
 import { EmailsInput } from './emails-input';
 
 describe(__filename, () => {
-    let component: any;
+    let component: {
+        addEmail: (email: string) => void;
+        getEmailCount: () => number;
+    };
     let rootNode: HTMLElement;
 
     beforeEach(() => {
         rootNode = document.createElement('div');
         document.body.appendChild(rootNode);
         component = EmailsInput(rootNode);
+    });
+
+    afterEach(() => {
+        rootNode.remove();
     });
 
     describe('API', () => {
@@ -60,6 +67,7 @@ describe(__filename, () => {
             input.value = 'foo@example.com';
             input.dispatchEvent(new KeyboardEvent('keypress', { key: ',' }));
             expect(component.getEmailCount()).toBe(1);
+            expect(input.value).toBe('');
         });
 
         it('should add email by pressing enter', () => {
@@ -69,6 +77,7 @@ describe(__filename, () => {
                 new KeyboardEvent('keypress', { key: 'Enter' }),
             );
             expect(component.getEmailCount()).toBe(1);
+            expect(input.value).toBe('');
         });
 
         it('should add email on input blur event', () => {
@@ -76,6 +85,34 @@ describe(__filename, () => {
             input.value = 'foo@example.com';
             input.dispatchEvent(new Event('blur'));
             expect(component.getEmailCount()).toBe(1);
+            expect(input.value).toBe('');
+        });
+
+        it('should add emails on paste event', () => {
+            const input = rootNode.querySelector('.input') as HTMLInputElement;
+            const e = new Event('paste') as Event & {
+                clipboardData: { getData: () => string };
+            };
+            e.clipboardData = {
+                getData() {
+                    return 'foo@example.com, bar@example.com';
+                },
+            };
+            input.dispatchEvent(e);
+            expect(component.getEmailCount()).toBe(2);
+            expect(input.value).toBe('');
+        });
+
+        it('should add emails on paste event in IE11', () => {
+            const input = rootNode.querySelector('.input') as HTMLInputElement;
+            window.clipboardData = {
+                getData() {
+                    return 'foo@example.com, bar@example.com';
+                },
+            };
+            input.dispatchEvent(new Event('paste'));
+            expect(component.getEmailCount()).toBe(2);
+            expect(input.value).toBe('');
         });
     });
 });

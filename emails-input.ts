@@ -3,6 +3,14 @@ interface Email {
     isValid: boolean;
 }
 
+declare global {
+    interface Window {
+        clipboardData?: {
+            getData: (type: 'Text') => string;
+        };
+    }
+}
+
 export function EmailsInput(rootNode: Element | null) {
     if (!rootNode) {
         throw new Error('Missing root node');
@@ -23,26 +31,47 @@ export function EmailsInput(rootNode: Element | null) {
         }
     });
 
+    const flushInputValue = () => {
+        if (input.value) {
+            addEmail(input.value);
+        }
+        input.value = '';
+    };
+
     const input = document.createElement('input');
     input.setAttribute('placeholder', 'add more people...');
     input.className = 'input';
     input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' || e.key === ',') {
             e.preventDefault();
-            const value = input.value;
-            if (value) {
-                addEmail(value);
+            flushInputValue();
+        }
+    });
+    input.addEventListener('blur', flushInputValue);
+
+    input.addEventListener(
+        'paste',
+        (e: ClipboardEvent & { originalEvent?: ClipboardEvent }) => {
+            e.preventDefault();
+            flushInputValue();
+
+            let clipboardText: string = '';
+
+            const clipboardData =
+                e.clipboardData || e.originalEvent?.clipboardData;
+            if (clipboardData) {
+                clipboardText = clipboardData.getData('text/plain');
             }
-            input.value = '';
-        }
-    });
-    input.addEventListener('blur', (e) => {
-        const value = input.value;
-        if (value) {
-            addEmail(value);
-        }
-        input.value = '';
-    });
+            if (window.clipboardData) {
+                // IE11
+                clipboardText = window.clipboardData.getData('Text');
+            }
+            if (clipboardText) {
+                clipboardText.split(/[,\s]+/).forEach(addEmail);
+            }
+        },
+    );
+
     rootNode.appendChild(input);
 
     const style = document.createElement('style');
