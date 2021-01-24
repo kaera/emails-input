@@ -7,11 +7,15 @@ describe(__filename, () => {
     beforeEach(() => {
         rootNode = document.createElement('div');
         document.body.appendChild(rootNode);
-        component = EmailsInput(rootNode);
+        component = EmailsInput(rootNode)!;
     });
 
     afterEach(() => {
         rootNode.remove();
+    });
+
+    it('should not allow creating multiple components on single node', () => {
+        expect(() => EmailsInput(rootNode)).toThrow(Error);
     });
 
     describe('API', () => {

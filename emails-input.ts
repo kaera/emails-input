@@ -72,6 +72,10 @@ export function EmailsInput(rootNode: Element | null) {
         throw new Error('Missing root node');
     }
 
+    if (rootNode.classList.contains('emails-input')) {
+        throw new Error(`EmailsInput is already initialized on ${rootNode}`);
+    }
+
     let validEmailCount = 0;
     const emails: {
         [email: string]: {
