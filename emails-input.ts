@@ -36,6 +36,13 @@ export function EmailsInput(rootNode: Element | null) {
             input.value = '';
         }
     });
+    input.addEventListener('blur', (e) => {
+        const value = input.value;
+        if (value) {
+            addEmail(value);
+        }
+        input.value = '';
+    });
     rootNode.appendChild(input);
 
     const style = document.createElement('style');

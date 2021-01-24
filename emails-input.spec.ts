@@ -70,5 +70,12 @@ describe(__filename, () => {
             );
             expect(component.getEmailCount()).toBe(1);
         });
+
+        it('should add email on input blur event', () => {
+            const input = rootNode.querySelector('.input') as HTMLInputElement;
+            input.value = 'foo@example.com';
+            input.dispatchEvent(new Event('blur'));
+            expect(component.getEmailCount()).toBe(1);
+        });
     });
 });
