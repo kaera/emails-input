@@ -140,5 +140,26 @@ describe(__filename, () => {
             expect(component.getEmailCount()).toBe(2);
             expect(input.value).toBe('');
         });
+
+        it('should focus on click on component', () => {
+            const input = rootNode.querySelector(
+                '.emails-input--input',
+            ) as HTMLInputElement;
+            rootNode.click();
+            expect(window.document.activeElement).toEqual(input);
+        });
+
+        it('should not focus on click on email tag', () => {
+            component.addEmail('foo@example.com   ');
+
+            const emailTag = rootNode.querySelector(
+                '.emails-input--tag',
+            ) as HTMLInputElement;
+            const input = rootNode.querySelector(
+                '.emails-input--input',
+            ) as HTMLInputElement;
+            emailTag.click();
+            expect(window.document.activeElement).not.toEqual(input);
+        });
     });
 });

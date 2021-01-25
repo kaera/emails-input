@@ -90,7 +90,7 @@ export function EmailsInput(rootNode: Element | null) {
                 validEmailCount--;
             }
             rootNode.removeChild(emailTag);
-        } else {
+        } else if (!target.classList.contains('emails-input--tag')) {
             input.focus();
         }
     });
