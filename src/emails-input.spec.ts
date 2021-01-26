@@ -1,5 +1,5 @@
 import { EmailsInput, EmailsInputAPI } from './emails-input';
-import styles from './styles';
+import styles from './emails-input.css';
 
 describe(__filename, () => {
     let component: EmailsInputAPI;

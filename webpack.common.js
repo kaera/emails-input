@@ -11,7 +11,7 @@ module.exports = {
     },
     output: {
         filename: '[name].js',
-        path: path.resolve(process.cwd(), 'dist'),
+        path: path.resolve(__dirname, 'dist'),
     },
     plugins: [
         new ProgressPlugin(),

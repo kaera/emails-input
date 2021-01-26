@@ -1,4 +1,4 @@
-import styles from './styles';
+import styles from './emails-input.css';
 
 export interface EmailsInputAPI {
     addEmail: (email: string) => void;
