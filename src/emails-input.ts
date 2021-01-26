@@ -28,13 +28,19 @@ function getClipboardText(
 }
 
 export class EmailsInput implements EmailsInputAPI {
-    private validEmailCount: number = 0;
+    // The choice of this data structure has pros and cons
+    // Pros: the runtime complexity of adding email, removing email,
+    //       and getting emails count is O(1)
+    // Cons: with current implementation, the runtime complexity
+    //       of getting the email list would be O(n)
     private emails: {
         [email: string]: {
             num: number;
             isValid: boolean;
         };
     } = {};
+    private validEmailCount: number = 0;
+
     private input: HTMLInputElement;
 
     constructor(private readonly rootNode: Element | null) {

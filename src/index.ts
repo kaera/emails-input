@@ -18,3 +18,7 @@ document.body
     .addEventListener('click', () => {
         alert(emailsInput.getEmailCount());
     });
+emailsInput.addEmail('john@miro.com');
+emailsInput.addEmail('invalid.email');
+emailsInput.addEmail('mike@miro.com');
+emailsInput.addEmail('alexander@miro.com');
