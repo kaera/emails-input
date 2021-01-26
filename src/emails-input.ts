@@ -27,91 +27,65 @@ function getClipboardText(
     }
 }
 
-function buildInput(addEmail: (value: string) => void) {
-    const flushInputValue = () => {
-        if (input.value) {
-            addEmail(input.value);
-        }
-        input.value = '';
-    };
-
-    const input = document.createElement('input');
-
-    input.setAttribute('placeholder', 'add more people...');
-    input.className = styles.input;
-    input.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter' || e.key === ',') {
-            e.preventDefault();
-            flushInputValue();
-        }
-    });
-    input.addEventListener('blur', flushInputValue);
-
-    input.addEventListener(
-        'paste',
-        (e: ClipboardEvent & { originalEvent?: ClipboardEvent }) => {
-            e.preventDefault();
-            flushInputValue();
-
-            const clipboardText = getClipboardText(e);
-            if (clipboardText) {
-                clipboardText.split(/[,\s]+/).forEach(addEmail);
-            }
-        },
-    );
-    return input;
-}
-
-export function EmailsInput(rootNode: Element | null) {
-    if (!rootNode) {
-        throw new Error('Missing root node');
-    }
-
-    if (rootNode.classList.contains(styles.root)) {
-        throw new Error(`EmailsInput is already initialized on ${rootNode}`);
-    }
-
-    let validEmailCount = 0;
-    const emails: {
+export class EmailsInput implements EmailsInputAPI {
+    private validEmailCount: number = 0;
+    private emails: {
         [email: string]: {
             num: number;
             isValid: boolean;
         };
     } = {};
+    private input: HTMLInputElement;
 
-    rootNode.classList.add(styles.root);
-    rootNode.addEventListener('click', (e) => {
-        const target = e.target as HTMLElement;
-        if (target.className === styles.remove) {
-            const emailTag = target.parentNode as Node;
-            const email = emails[target.dataset.value!];
-            email.num--;
-            if (email.num === 0) {
-                validEmailCount--;
-            }
-            rootNode.removeChild(emailTag);
-        } else if (!target.classList.contains(styles.tag)) {
-            input.focus();
+    constructor(private readonly rootNode: Element | null) {
+        if (!rootNode) {
+            throw new Error('Missing root node');
         }
-    });
 
-    const addEmail = (value: string): void => {
+        if (rootNode.classList.contains(styles.root)) {
+            throw new Error(
+                `EmailsInput is already initialized on ${rootNode}`,
+            );
+        }
+
+        rootNode.classList.add(styles.root);
+        rootNode.addEventListener('click', (e) => {
+            const target = e.target as HTMLElement;
+            console.log(target);
+            if (target.className === styles.remove) {
+                const emailTag = target.parentNode as Node;
+                const email = this.emails[target.dataset.value!];
+                email.num--;
+                if (email.num === 0) {
+                    this.validEmailCount--;
+                }
+                rootNode.removeChild(emailTag);
+            } else if (!target.classList.contains(styles.tag)) {
+                this.input.focus();
+            }
+        });
+
+        this.input = this.buildInput();
+        rootNode.appendChild(this.input);
+    }
+
+    addEmail(value: string): void {
         value = value.trim();
         if (!value) {
             return;
         }
 
-        if (!(value in emails)) {
-            emails[value] = {
+        if (!(value in this.emails)) {
+            this.emails[value] = {
                 num: 0,
                 isValid: /^[^\s,@]+@[^\s,@]+$/.test(value),
             };
         }
 
-        const email = emails[value];
+        const email = this.emails[value];
         email.num++;
         if (email.isValid && email.num === 1) {
-            validEmailCount++;
+            this.validEmailCount++;
         }
 
         const emailTag = document.createElement('span');
@@ -122,15 +96,51 @@ export function EmailsInput(rootNode: Element | null) {
         removeBtn.className = styles.remove;
         removeBtn.dataset.value = value;
         emailTag.appendChild(removeBtn);
-        rootNode.insertBefore(emailTag, input);
-    };
+        this.rootNode.insertBefore(emailTag, this.input);
+    }
 
-    const input = buildInput(addEmail);
-    rootNode.appendChild(input);
+    getEmailCount(): number {
+        return this.validEmailCount;
+    }
 
-    return {
-        addEmail,
-        getEmailCount: (): number => validEmailCount,
-    };
+    private flushInputValue() {
+        if (this.input.value) {
+            this.addEmail(this.input.value);
+        }
+        this.input.value = '';
+    }
+
+    private buildInput() {
+        const input = document.createElement('input');
+
+        input.setAttribute('placeholder', 'add more people...');
+        input.className = styles.input;
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' || e.key === ',') {
+                e.preventDefault();
+                this.flushInputValue();
+            }
+        });
+        input.addEventListener('blur', () => this.flushInputValue());
+
+        input.addEventListener(
+            'paste',
+            (e: ClipboardEvent & { originalEvent?: ClipboardEvent }) => {
+                e.preventDefault();
+                this.flushInputValue();
+
+                const clipboardText = getClipboardText(e);
+                if (clipboardText) {
+                    clipboardText
+                        .split(/[,\s]+/)
+                        .forEach((email) => this.addEmail(email));
+                }
+            },
+        );
+        return input;
+    }
 }
-window.EmailsInput = EmailsInput;
+
+window.EmailsInput = function (rootNode) {
+    return new EmailsInput(rootNode);
+};

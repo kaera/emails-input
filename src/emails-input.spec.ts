@@ -8,7 +8,7 @@ describe(__filename, () => {
     beforeEach(() => {
         rootNode = document.createElement('div');
         document.body.appendChild(rootNode);
-        component = EmailsInput(rootNode)!;
+        component = new EmailsInput(rootNode)!;
     });
 
     afterEach(() => {
@@ -16,7 +16,7 @@ describe(__filename, () => {
     });
 
     it('should not allow creating multiple components on single node', () => {
-        expect(() => EmailsInput(rootNode)).toThrow(Error);
+        expect(() => new EmailsInput(rootNode)).toThrow(Error);
     });
 
     describe('API', () => {
