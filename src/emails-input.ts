@@ -1,4 +1,4 @@
-import './emails-input.css';
+import styles from './styles';
 
 export interface EmailsInputAPI {
     addEmail: (email: string) => void;
@@ -38,7 +38,7 @@ function buildInput(addEmail: (value: string) => void) {
     const input = document.createElement('input');
 
     input.setAttribute('placeholder', 'add more people...');
-    input.className = 'emails-input--input';
+    input.className = styles.input;
     input.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' || e.key === ',') {
             e.preventDefault();
@@ -67,7 +67,7 @@ export function EmailsInput(rootNode: Element | null) {
         throw new Error('Missing root node');
     }
 
-    if (rootNode.classList.contains('emails-input')) {
+    if (rootNode.classList.contains(styles.root)) {
         throw new Error(`EmailsInput is already initialized on ${rootNode}`);
     }
 
@@ -79,10 +79,10 @@ export function EmailsInput(rootNode: Element | null) {
         };
     } = {};
 
-    rootNode.classList.add('emails-input');
+    rootNode.classList.add(styles.root);
     rootNode.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
-        if (target.className === 'emails-input--remove-button') {
+        if (target.className === styles.remove) {
             const emailTag = target.parentNode as Node;
             const email = emails[target.dataset.value!];
             email.num--;
@@ -90,7 +90,7 @@ export function EmailsInput(rootNode: Element | null) {
                 validEmailCount--;
             }
             rootNode.removeChild(emailTag);
-        } else if (!target.classList.contains('emails-input--tag')) {
+        } else if (!target.classList.contains(styles.tag)) {
             input.focus();
         }
     });
@@ -116,14 +116,10 @@ export function EmailsInput(rootNode: Element | null) {
 
         const emailTag = document.createElement('span');
         emailTag.textContent = value;
-        emailTag.classList.add('emails-input--tag');
-        emailTag.classList.add(
-            email.isValid
-                ? 'emails-input--tag-valid'
-                : 'emails-input--tag-invalid',
-        );
+        emailTag.classList.add(styles.tag);
+        emailTag.classList.add(email.isValid ? styles.valid : styles.invalid);
         const removeBtn = document.createElement('span');
-        removeBtn.className = 'emails-input--remove-button';
+        removeBtn.className = styles.remove;
         removeBtn.dataset.value = value;
         emailTag.appendChild(removeBtn);
         rootNode.insertBefore(emailTag, input);

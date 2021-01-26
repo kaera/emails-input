@@ -1,4 +1,4 @@
-.emails-input {
+.root {
     border: 1px solid #c3c2cf;
     border-radius: 4px;
     overflow: auto;
@@ -10,23 +10,24 @@
     line-height: 24px;
     color: #050038;
 }
-.emails-input--tag {
+
+.tag {
     margin: 4px 8px 0 0;
     display: inline-block;
     word-break: break-all;
 }
 
-.emails-input--tag-valid {
+.valid {
     background: rgba(102, 153, 255, 0.2);
     border-radius: 100px;
     padding: 0 10px;
 }
 
-.emails-input--tag-invalid {
+.invalid {
     border-bottom: 1px dashed #d92929;
 }
 
-.emails-input--remove-button {
+.remove {
     display: inline-block;
     width: 8px;
     height: 8px;
@@ -35,7 +36,7 @@
     cursor: pointer;
 }
 
-.emails-input--input {
+.input {
     border: 0;
     outline: 0;
     display: inline-block;
@@ -43,6 +44,6 @@
     font-size: 14px;
 }
 
-.emails-input--input::-ms-clear {
+.input::-ms-clear {
     display: none;
 }

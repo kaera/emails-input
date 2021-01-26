@@ -1,4 +1,5 @@
 import { EmailsInput, EmailsInputAPI } from './emails-input';
+import styles from './styles';
 
 describe(__filename, () => {
     let component: EmailsInputAPI;
@@ -46,41 +47,37 @@ describe(__filename, () => {
     describe('DOM', () => {
         it('should render valid email tag', () => {
             component.addEmail('foo@example.com');
-            const emailTag = rootNode.querySelector('.emails-input--tag');
+            const emailTag = rootNode.querySelector('.' + styles.tag);
             expect(emailTag?.textContent).toBe('foo@example.com');
-            expect(
-                emailTag?.classList.contains('emails-input--tag-valid'),
-            ).toBeTruthy();
+            expect(emailTag?.classList.contains(styles.valid)).toBeTruthy();
         });
 
         it('should trim spaces', () => {
             component.addEmail('foo@example.com   ');
-            const emailTag = rootNode.querySelector('.emails-input--tag');
+            const emailTag = rootNode.querySelector('.' + styles.tag);
             expect(emailTag?.textContent).toBe('foo@example.com');
         });
 
         it('should render invalid email tags', () => {
             component.addEmail('foo');
-            const emailTag = rootNode.querySelector('.emails-input--tag');
+            const emailTag = rootNode.querySelector('.' + styles.tag);
             expect(emailTag?.textContent).toBe('foo');
-            expect(
-                emailTag?.classList.contains('emails-input--tag-invalid'),
-            ).toBeTruthy();
+            expect(emailTag?.classList.contains(styles.invalid)).toBeTruthy();
         });
 
         it('should remove email tags', () => {
             component.addEmail('foo@example.com');
             const removeButton = rootNode.querySelector(
-                '.emails-input--remove-button',
+                '.' + styles.remove,
             ) as HTMLButtonElement;
             removeButton.click();
             expect(component.getEmailCount()).toBe(0);
-            expect(rootNode.querySelector('.emails-input--tag')).toBeNull();
+            expect(rootNode.querySelector(styles.tag)).toBeNull();
         });
 
         it('should add email by pressing comma', () => {
             const input = rootNode.querySelector(
-                '.emails-input--input',
+                '.' + styles.input,
             ) as HTMLInputElement;
             input.value = 'foo@example.com';
             input.dispatchEvent(new KeyboardEvent('keypress', { key: ',' }));
@@ -90,7 +87,7 @@ describe(__filename, () => {
 
         it('should add email by pressing enter', () => {
             const input = rootNode.querySelector(
-                '.emails-input--input',
+                '.' + styles.input,
             ) as HTMLInputElement;
             input.value = 'foo@example.com';
             input.dispatchEvent(
@@ -102,7 +99,7 @@ describe(__filename, () => {
 
         it('should add email on input blur event', () => {
             const input = rootNode.querySelector(
-                '.emails-input--input',
+                '.' + styles.input,
             ) as HTMLInputElement;
             input.value = 'foo@example.com';
             input.dispatchEvent(new Event('blur'));
@@ -112,7 +109,7 @@ describe(__filename, () => {
 
         it('should add emails on paste event', () => {
             const input = rootNode.querySelector(
-                '.emails-input--input',
+                '.' + styles.input,
             ) as HTMLInputElement;
             const e = new Event('paste') as Event & {
                 clipboardData: { getData: () => string };
@@ -129,7 +126,7 @@ describe(__filename, () => {
 
         it('should add emails on paste event in IE11', () => {
             const input = rootNode.querySelector(
-                '.emails-input--input',
+                '.' + styles.input,
             ) as HTMLInputElement;
             window.clipboardData = {
                 getData() {
@@ -143,7 +140,7 @@ describe(__filename, () => {
 
         it('should focus on click on component', () => {
             const input = rootNode.querySelector(
-                '.emails-input--input',
+                '.' + styles.input,
             ) as HTMLInputElement;
             rootNode.click();
             expect(window.document.activeElement).toEqual(input);
@@ -153,10 +150,10 @@ describe(__filename, () => {
             component.addEmail('foo@example.com   ');
 
             const emailTag = rootNode.querySelector(
-                '.emails-input--tag',
+                '.' + styles.tag,
             ) as HTMLInputElement;
             const input = rootNode.querySelector(
-                '.emails-input--input',
+                '.' + styles.input,
             ) as HTMLInputElement;
             emailTag.click();
             expect(window.document.activeElement).not.toEqual(input);

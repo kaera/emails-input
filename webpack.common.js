@@ -4,7 +4,10 @@ const { ProgressPlugin } = require('webpack');
 const path = require('path');
 
 module.exports = {
-    entry: { 'emails-input': './src/emails-input.ts', index: './src/index.ts' },
+    entry: {
+        'emails-input': './src/emails-input.ts',
+        index: './src/index.ts',
+    },
     output: {
         filename: '[name].js',
         path: path.resolve(process.cwd(), 'dist'),
@@ -20,11 +23,22 @@ module.exports = {
             ],
         }),
     ],
+    resolve: {
+        extensions: ['.ts'],
+    },
     module: {
         rules: [
             {
                 test: /\.css$/,
-                use: ['style-loader', 'css-loader'],
+                use: [
+                    { loader: 'style-loader' },
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.ts?$/,
