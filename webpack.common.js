@@ -4,6 +4,7 @@ const { ProgressPlugin } = require('webpack');
 const path = require('path');
 
 module.exports = {
+    target: 'es5',
     entry: {
         'emails-input': './src/emails-input.ts',
         index: './src/index.ts',

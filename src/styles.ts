@@ -1,6 +1,6 @@
 import styles from './emails-input.css';
 
-const defaultStyles = {
+const defaultStyles: { [index: string]: string } = {
     root: 'root',
     tag: 'tag',
     valid: 'valid',
@@ -9,4 +9,9 @@ const defaultStyles = {
     input: 'input',
 };
 
-export default Object.assign(defaultStyles, styles);
+// IE11 doesn't support Object.assign
+for (const key in styles) {
+    defaultStyles[key] = (styles as { [index: string]: string })[key];
+}
+
+export default defaultStyles;

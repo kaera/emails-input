@@ -51,7 +51,6 @@ export class EmailsInput implements EmailsInputAPI {
         rootNode.classList.add(styles.root);
         rootNode.addEventListener('click', (e) => {
             const target = e.target as HTMLElement;
-            console.log(target);
             if (target.className === styles.remove) {
                 const emailTag = target.parentNode as Node;
                 const email = this.emails[target.dataset.value!];
@@ -96,7 +95,7 @@ export class EmailsInput implements EmailsInputAPI {
         removeBtn.className = styles.remove;
         removeBtn.dataset.value = value;
         emailTag.appendChild(removeBtn);
-        this.rootNode.insertBefore(emailTag, this.input);
+        this.rootNode!.insertBefore(emailTag, this.input);
     }
 
     getEmailCount(): number {
