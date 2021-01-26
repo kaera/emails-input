@@ -75,6 +75,15 @@ describe(__filename, () => {
             expect(rootNode.querySelector(styles.tag)).toBeNull();
         });
 
+        it('should not count removing invalid emails', () => {
+            component.addEmail('foo');
+            const removeButton = rootNode.querySelector(
+                '.' + styles.remove,
+            ) as HTMLButtonElement;
+            removeButton.click();
+            expect(component.getEmailCount()).toBe(0);
+        });
+
         it('should add email by pressing comma', () => {
             const input = rootNode.querySelector(
                 '.' + styles.input,

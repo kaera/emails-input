@@ -55,7 +55,7 @@ export class EmailsInput implements EmailsInputAPI {
                 const emailTag = target.parentNode as Node;
                 const email = this.emails[target.dataset.value!];
                 email.num--;
-                if (email.num === 0) {
+                if (email.isValid && email.num === 0) {
                     this.validEmailCount--;
                 }
                 rootNode.removeChild(emailTag);
