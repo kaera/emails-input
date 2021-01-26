@@ -13,6 +13,7 @@
 .emails-input--tag {
     margin: 4px 8px 0 0;
     display: inline-block;
+    word-break: break-all;
 }
 
 .emails-input--tag-valid {
